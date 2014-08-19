@@ -1,68 +1,75 @@
-sliderInt = 1; 
-sliderNext = 2; 
+sliderInt=1;
+sliderNext=2;
+var count=0;
+var loop;
 
-$(document).ready(function() {
-    $('#slider > img#1').fadeIn(300);  
-});
-
-function startSlider() {
-  count = $('#slider > img').size(); 
-    
-  loop = setInterval(function() {
-      
-    if(sliderNext > count) {
-       sliderNext = 1; 
-       sliderInt = 1;
-    } 
-      
-    $('#slider > img').fadeOut(300);
-    $('#slider > img#' + sliderNext).fadeIn(300);
-      
-    sliderInt = sliderNext;
-    sliderNext++;
-
-  }, 3000);
-    
-}
-
-$('.left').onclick(function(e) {
-   e.preventDefault();
-   newSlide = sliderInt - 1; 
-   showSlide(newSlide);
-});
-
-$('.right').onclick(function(e) {
-   e.preventDefault();
-   newSlide = sliderInt + 1; 
-   showSlide(newSlide);
-});
-
-function stopLoop() {
-   window.clearInterval(loop);   
-}
-
-function showSlide(Id) {
-    stopLoop();
-    if (Id > count) {
-       Id = 1; 
-       sliderInt = 1;
-    } else if (Id < 1) {
-        Id = count;   
-    }
-    
-    $('#slider > img').fadeOut(300);
-    $('#slider > img#' + Id).fadeIn(300);
-      
-    sliderInt = Id;
-    sliderNext = Id + 1;
+$(document).ready(function(){
+    $("#slider>img#1").fadeIn(300);
     startSlider();
+    
+    /* right/previous button click */
+    $(".right").click(function(event){
+        next(); 
+        event.preventDefault();
+    });
+    /* left/next button click */
+    $(".left").click(function(event){
+        prev(); 
+        event.preventDefault();
+    });
+});
+
+
+
+function startSlider(){
+    count=$("#slider>Img").size(); /* count the number of images/items */
+    delayCall(); /* start the slide */
+    
 }
 
-$('#slider > img').hover(
-    function() {
-      stopLoop();   
-    },
-    function() {
-      startSlider();
-    } 
-);
+function delayCall(){
+    loop=setInterval(function(){
+        
+        if(sliderNext>count){
+            sliderNext=1;
+            sliderInt=1;
+        }
+        
+        $("#slider>Img").fadeOut(300);
+        $("#slider>Img#" + sliderNext).fadeIn(300);
+        
+        sliderInt=sliderNext;
+        sliderNext=sliderNext + 1;
+        
+    },3000);
+    
+}
+
+function prev(){
+    clearInterval(loop); 
+    if(sliderInt==1)
+        newSlide=count;
+    else
+        newSlide=sliderInt-1;
+    showSlide(newSlide);
+}
+
+function next(){
+    clearInterval(loop);
+    if(sliderInt==count)
+        sliderInt=0;
+    newSlide=sliderInt + 1;
+    showSlide(newSlide);
+}
+
+/* slide animation - forward */ 
+function showSlide(id){
+    
+    $("#slider>Img").fadeOut(300);
+    $("#slider>Img#" + id).fadeIn(300).delay(1000);
+    
+    sliderInt=id;
+    sliderNext=id + 1;
+    delayCall();
+    
+}
