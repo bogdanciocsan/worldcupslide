@@ -19,8 +19,6 @@ $(document).ready(function(){
     });
 });
 
-
-
 function startSlider(){
     count=$("#slider>Img").size(); /* count the number of images/items */
     delayCall(); /* start the slide */
